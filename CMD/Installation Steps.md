@@ -12,6 +12,10 @@ Install dependencies
 
 `npm install`
 
+Install ImageMagick
+
+`sudo apt install imagemagick`
+
 # Running steps
 
 `npm start`
