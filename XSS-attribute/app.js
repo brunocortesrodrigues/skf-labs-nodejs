@@ -8,7 +8,7 @@ app.get("", (req, res) => {
   res.render("index.ejs", { xss: null });
 });
 
-app.post("/home/", (req, res) => {
+app.post("/home", (req, res) => {
   let userInput = req.body.string;
   res.render("index.ejs", { xss: userInput });
 });
