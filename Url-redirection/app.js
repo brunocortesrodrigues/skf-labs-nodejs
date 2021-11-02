@@ -5,12 +5,16 @@ app.use(express.static(__dirname + "/static"));
 app.use(express.urlencoded({ extended: true }));
 
 app.get("", (req, res) => {
-  res.render("index.ejs", { xss: null });
+  res.render("index.ejs", { content: "Sorry, this is the old website." });
 });
 
-app.post("/home", (req, res) => {
-  let userInput = req.body.string;
-  res.render("index.ejs", { xss: userInput });
+app.get("/newsite", (req, res) => {
+  res.render("index.ejs", { content: "Welcome to the new website!" });
+});
+
+app.post("/redirect", (req, res) => {
+  let newurl = req.query.newurl;
+  res.redirect(302, newurl);
 });
 
 app.use(function (req, res) {
