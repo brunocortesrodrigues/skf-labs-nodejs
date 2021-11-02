@@ -1,6 +1,13 @@
 const express = require("express");
 const app = express();
 
+const blacklist = (newurl) => {
+  if (newurl.includes(".")) {
+    return true;
+  }
+  return false;
+};
+
 app.use(express.static(__dirname + "/static"));
 app.use(express.urlencoded({ extended: true }));
 
@@ -14,7 +21,7 @@ app.get("/newsite", (req, res) => {
 
 app.post("/redirect", (req, res) => {
   let newurl = req.query.newurl;
-  if (newurl.includes(".")) {
+  if (blacklist(newurl)) {
     res.render("index.ejs", {
       content: 'Sorry, you cannot use "." in the redirect',
     });
