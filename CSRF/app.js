@@ -10,7 +10,14 @@ app.use(express.static(__dirname + "/static"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
-app.use(sessions({ secret: "secret" }));
+app.use(
+  sessions({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 86400000 },
+  })
+);
 
 app.get("", (req, res) => {
   res.render("index.ejs");
@@ -36,6 +43,8 @@ app.post("/login", (req, res) => {
     }
   });
 });
+
+// missing authentication for /update
 
 app.post("/update", (req, res) => {
   const sql = "UPDATE preferences SET Color = ? WHERE UserId = ?";
