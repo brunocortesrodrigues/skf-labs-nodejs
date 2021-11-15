@@ -19,6 +19,8 @@ app.use(
   })
 );
 
+let session;
+
 app.get("", (req, res) => {
   res.render("index.ejs");
 });
@@ -29,14 +31,11 @@ app.post("/login", (req, res) => {
   const sql = "SELECT * FROM users WHERE username = ? AND password = ?";
   db.get(sql, [username, password], (err, row) => {
     if (row) {
-      let session = req.session;
+      session = req.session;
       session.userId = row.UserId;
+      session.loggedIn = true;
       db.get("SELECT * FROM preferences", (err, row) => {
-        if (row) {
-          res.render("home.ejs", { color: row.Color });
-        } else {
-          res.render("home.ejs", { color: null });
-        }
+        res.render("home.ejs", { color: row.Color });
       });
     } else {
       res.render("");
@@ -44,23 +43,17 @@ app.post("/login", (req, res) => {
   });
 });
 
-// missing authentication for /update
-
 app.post("/update", (req, res) => {
-  const sql = "UPDATE preferences SET Color = ? WHERE UserId = ?";
-  db.run(sql, [req.body.color, req.session.userId], (err) => {
-    if (err) {
-      console.log(err);
-    } else {
+  if (!session.loggedIn) {
+    res.redirect("/");
+  } else {
+    const sql = "UPDATE preferences SET Color = ? WHERE UserId = ?";
+    db.run(sql, [req.body.color, req.session.userId], () => {
       db.get("SELECT * FROM preferences", (err, row) => {
-        if (row) {
-          res.render("home.ejs", { color: row.Color });
-        } else {
-          res.render("home.ejs", { color: null });
-        }
+        res.render("home.ejs", { color: row.Color });
       });
-    }
-  });
+    });
+  }
 });
 
 app.use(function (req, res) {

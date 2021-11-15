@@ -2,7 +2,6 @@ const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
 const cookieParser = require("cookie-parser");
 const sessions = require("express-session");
-const session = require("express-session");
 const app = express();
 const db = new sqlite3.Database("./Database.db3");
 
@@ -16,30 +15,27 @@ app.use(
     secret: "secret",
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 86400000 } ,
+    cookie: { maxAge: 86400000 },
   })
 );
+
+let session;
 
 app.get("", (req, res) => {
   res.render("index.ejs");
 });
 
-
-app.post("/login", (req, res) => {
-  session.cookie.samesite = "strict";
+app.post("/login_insecure", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   const sql = "SELECT * FROM users WHERE username = ? AND password = ?";
   db.get(sql, [username, password], (err, row) => {
     if (row) {
-      let session = req.session;
+      session = req.session;
       session.userId = row.UserId;
+      session.loggedIn = true;
       db.get("SELECT * FROM preferences", (err, row) => {
-        if (row) {
-          res.render("home.ejs", { color: row.Color });
-        } else {
-          res.render("home.ejs", { color: null });
-        }
+        res.render("home.ejs", { color: row.Color });
       });
     } else {
       res.render("");
@@ -47,23 +43,64 @@ app.post("/login", (req, res) => {
   });
 });
 
-// missing authentication for /update
-
-app.post("/update", (req, res) => {
-  const sql = "UPDATE preferences SET Color = ? WHERE UserId = ?";
-  db.run(sql, [req.body.color, req.session.userId], (err) => {
-    if (err) {
-      console.log(err);
-    } else {
+app.post("/login_strict", (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  const sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+  db.get(sql, [username, password], (err, row) => {
+    if (row) {
+      session = req.session;
+      session.userId = row.UserId;
+      session.loggedIn = true;
+      session.cookie.sameSite = "strict";
       db.get("SELECT * FROM preferences", (err, row) => {
-        if (row) {
-          res.render("home.ejs", { color: row.Color });
-        } else {
-          res.render("home.ejs", { color: null });
-        }
+        res.render("home.ejs", { color: row.Color });
       });
+    } else {
+      res.render("");
     }
   });
+});
+
+app.post("/login_lax", (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  const sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+  db.get(sql, [username, password], (err, row) => {
+    if (row) {
+      session = req.session;
+      session.userId = row.UserId;
+      session.loggedIn = true;
+      session.cookie.sameSite = "lax";
+      db.get("SELECT * FROM preferences", (err, row) => {
+        res.render("home.ejs", { color: row.Color });
+      });
+    } else {
+      res.render("");
+    }
+  });
+});
+
+app.all("/update", (req, res) => {
+  const sql = "UPDATE preferences SET Color = ? WHERE UserId = ?";
+  if (!session) {
+    res.redirect("/");
+  } else {
+    if (req.method === "POST") {
+      db.run(sql, [req.body.color, req.session.userId], (err) => {
+        db.get("SELECT * FROM preferences", (err, row) => {
+          res.render("home.ejs", { color: row.Color });
+        });
+      });
+    }
+    if (req.method === "GET" && req.query.color) {
+      db.run(sql, [req.query.color, req.session.userId], (err) => {
+        db.get("SELECT * FROM preferences", (err, row) => {
+          res.render("home.ejs", { color: row.Color });
+        });
+      });
+    }
+  }
 });
 
 app.use(function (req, res) {
