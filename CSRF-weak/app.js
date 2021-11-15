@@ -31,20 +31,18 @@ app.post("/login", (req, res) => {
   const sql = "SELECT * FROM users WHERE username = ? AND password = ?";
   db.get(sql, [username, password], (err, row) => {
     if (row) {
-      const date = new Date()
+      const date = new Date();
       const time = date.getHours() + ":" + date.getMinutes();
-      let csrf_token = username + time
-      session =  req.session;
+      let csrf_token = username + time;
+      session = req.session;
       session.userId = row.UserId;
       session.loggedIn = true;
-      session.csrf_token = Buffer.from(csrf_token).toString('base64')
-      console.log(session.csrf_token)
-      console.log(csrf_token)
+      session.csrf_token = Buffer.from(csrf_token).toString("base64");
       db.get("SELECT * FROM preferences", (err, row) => {
         if (row) {
-          res.render("home.ejs", { color: row.Color , csrf_token: csrf_token });
+          res.render("home.ejs", { color: row.Color, csrf_token: csrf_token });
         } else {
-          res.render("home.ejs", { color: null , csrf_token: null});
+          res.render("home.ejs", { color: null, csrf_token: null });
         }
       });
     } else {
@@ -53,15 +51,11 @@ app.post("/login", (req, res) => {
   });
 });
 
-// missing authentication for /update
 app.post("/update", (req, res) => {
-  console.log(session)
-  console.log(req.body)
   if (!session) {
-    res.render("")
+    res.render("");
   } else {
-    const csrf_token = Buffer.from(session.csrf_token, 'base64').toString()
-    console.log(csrf_token)
+    const csrf_token = Buffer.from(session.csrf_token, "base64").toString();
     const sql = "UPDATE preferences SET Color = ? WHERE UserId = ?";
     db.run(sql, [req.body.color, req.session.userId], (err) => {
       if (err) {
@@ -70,12 +64,15 @@ app.post("/update", (req, res) => {
         db.get("SELECT * FROM preferences", (err, row) => {
           if (row) {
             if (csrf_token === req.body.csrf_token) {
-              res.render("home.ejs", { color: row.Color, csrf_token: req.body.csrf_token});
+              res.render("home.ejs", {
+                color: row.Color,
+                csrf_token: req.body.csrf_token,
+              });
             } else {
-              res.render("home.ejs", { color: "ERROR!" , csrf_token: null})
-            }  
+              res.render("home.ejs", { color: "ERROR!", csrf_token: null });
+            }
           } else {
-            res.render("home.ejs", { color: null , csrf_token: null});
+            res.render("home.ejs", { color: null, csrf_token: null });
           }
         });
       }
