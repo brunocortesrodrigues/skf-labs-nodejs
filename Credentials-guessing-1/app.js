@@ -25,19 +25,17 @@ app.get("", (req, res) => {
   res.render("index.ejs");
 });
 
-// have to change home page
-
 app.post("/login", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   const sql = "SELECT * FROM users WHERE username = ? AND password = ?";
   db.get(sql, [username, password], (err, row) => {
     if (row) {
-      session =  req.session;
+      session = req.session;
       session.userId = row.UserId;
       session.loggedIn = true;
-      res.render("home.ejs")
-     } else {
+      res.render("home.ejs");
+    } else {
       res.render("");
     }
   });

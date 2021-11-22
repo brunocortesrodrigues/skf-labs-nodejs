@@ -23,7 +23,7 @@ app.post("/redirect", (req, res) => {
   let newurl = req.query.newurl;
   if (blacklist(newurl)) {
     res.render("index.ejs", {
-      content: 'Sorry, you cannot use "." and "/" in the redirect. Good luck!',
+      content: 'Sorry, you cannot use "." or "/" in the redirect. Good luck!',
     });
   } else res.redirect(302, newurl);
 });

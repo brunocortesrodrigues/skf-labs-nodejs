@@ -1,7 +1,8 @@
+const cookieSession = require("cookie-session");
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
 const cookieParser = require("cookie-parser");
-const sessions = require("express-session");
+
 const app = express();
 const db = new sqlite3.Database("./Database.db3");
 
@@ -11,11 +12,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(
-  sessions({
-    secret: "secret",
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 86400000 },
+  cookieSession({
+    name: "session",
+    signed: false,
+    maxAge: 86400000,
   })
 );
 
@@ -44,6 +44,7 @@ app.post("/login_insecure", (req, res) => {
 });
 
 app.post("/login_strict", (req, res) => {
+  req.sessionOptions.sameSite = "strict";
   const username = req.body.username;
   const password = req.body.password;
   const sql = "SELECT * FROM users WHERE username = ? AND password = ?";
@@ -52,7 +53,6 @@ app.post("/login_strict", (req, res) => {
       session = req.session;
       session.userId = row.UserId;
       session.loggedIn = true;
-      session.cookie.sameSite = "strict";
       db.get("SELECT * FROM preferences", (err, row) => {
         res.render("home.ejs", { color: row.Color });
       });
@@ -63,6 +63,7 @@ app.post("/login_strict", (req, res) => {
 });
 
 app.post("/login_lax", (req, res) => {
+  req.sessionOptions.sameSite = "lax";
   const username = req.body.username;
   const password = req.body.password;
   const sql = "SELECT * FROM users WHERE username = ? AND password = ?";
@@ -71,7 +72,6 @@ app.post("/login_lax", (req, res) => {
       session = req.session;
       session.userId = row.UserId;
       session.loggedIn = true;
-      session.cookie.sameSite = "lax";
       db.get("SELECT * FROM preferences", (err, row) => {
         res.render("home.ejs", { color: row.Color });
       });

@@ -1,7 +1,7 @@
+const cookieSession = require("cookie-session");
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
 const cookieParser = require("cookie-parser");
-const sessions = require("express-session");
 const app = express();
 const db = new sqlite3.Database("./Database.db3");
 
@@ -11,11 +11,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(
-  sessions({
-    secret: "secret",
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 86400000 },
+  cookieSession({
+    name: "session",
+    keys: ["secret"],
+    maxAge: 86400000,
   })
 );
 

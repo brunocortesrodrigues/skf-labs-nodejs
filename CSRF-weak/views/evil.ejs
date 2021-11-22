@@ -99,7 +99,7 @@
 
 <iframe style="display:none" name="csrf-frame"></iframe>
 <form method='POST' action='http://localhost:5000/update' target="csrf-frame" id="csrf-form">
-  <input type="hidden" name='csrf_token' value=<%= csrf_token %>>
+  <input type="hidden" name='csrf_token' value='<%= csrf_token %>'>
   <input type='hidden' name='color' value='Hackzord!'>
   <input type='submit' value='submit'>
 </form>

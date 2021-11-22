@@ -25,24 +25,22 @@ app.get("", (req, res) => {
   res.render("index.ejs", { error: null });
 });
 
-// have to change home page
-
 app.post("/login", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   const sql = "SELECT * FROM users WHERE username = ?";
   db.get(sql, [username], (err, row) => {
     if (row) {
-      if(row.Password == password) {
-        session =  req.session;
+      if (row.Password == password) {
+        session = req.session;
         session.userId = row.UserId;
         session.loggedIn = true;
-        res.render("home.ejs") 
+        res.render("home.ejs");
       } else {
-        res.render("" , { error: null });
+        res.render("", { error: null });
       }
     } else {
-      res.render("" , { error: "Username does not exist" })
+      res.render("", { error: "Username does not exist" });
     }
   });
 });

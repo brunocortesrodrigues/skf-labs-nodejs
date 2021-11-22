@@ -1,7 +1,7 @@
+const cookieSession = require("cookie-session");
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
 const cookieParser = require("cookie-parser");
-const sessions = require("express-session");
 const app = express();
 const db = new sqlite3.Database("./Database.db3");
 
@@ -11,11 +11,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(
-  sessions({
-    secret: "secret",
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 86400000 },
+  cookieSession({
+    name: "session",
+    keys: ["secret"],
+    maxAge: 86400000,
   })
 );
 
@@ -40,7 +39,10 @@ app.post("/login", (req, res) => {
       session.csrf_token = Buffer.from(csrf_token).toString("base64");
       db.get("SELECT * FROM preferences", (err, row) => {
         if (row) {
-          res.render("home.ejs", { color: row.Color, csrf_token: csrf_token });
+          res.render("home.ejs", {
+            color: row.Color,
+            csrf_token: session.csrf_token,
+          });
         } else {
           res.render("home.ejs", { color: null, csrf_token: null });
         }
@@ -52,25 +54,20 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/update", (req, res) => {
-  if (!session) {
+  if (!session.loggedIn) {
     res.render("");
   } else {
-    const csrf_token = Buffer.from(session.csrf_token, "base64").toString();
     const sql = "UPDATE preferences SET Color = ? WHERE UserId = ?";
     db.run(sql, [req.body.color, req.session.userId], (err) => {
       if (err) {
         console.log(err);
       } else {
         db.get("SELECT * FROM preferences", (err, row) => {
-          if (row) {
-            if (csrf_token === req.body.csrf_token) {
-              res.render("home.ejs", {
-                color: row.Color,
-                csrf_token: req.body.csrf_token,
-              });
-            } else {
-              res.render("home.ejs", { color: "ERROR!", csrf_token: null });
-            }
+          if (req.session.csrf_token === req.body.csrf_token) {
+            res.render("home.ejs", {
+              color: row.Color,
+              csrf_token: req.body.csrf_token,
+            });
           } else {
             res.render("home.ejs", { color: null, csrf_token: null });
           }
