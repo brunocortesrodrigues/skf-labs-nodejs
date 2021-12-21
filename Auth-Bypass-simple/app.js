@@ -30,7 +30,6 @@ app.all("/login", (req, res) => {
       if (row) {
         req.session.userId = row.UserId;
         req.session.loggedIn = true;
-        console.log(req.session);
         db.get(api, [req.session.userId], (err, row) => {
           res.render("home.ejs", { api: row.API_key });
         });

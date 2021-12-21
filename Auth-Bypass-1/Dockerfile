@@ -8,12 +8,12 @@ RUN apk update --no-cache && apk add --update nodejs nodejs-npm bash git dos2uni
 RUN addgroup -g 1000 app 
 RUN adduser -u 1000 -G app -D -h /home/app app
 
-COPY ./ /home/app/auth-bypass-simple
+COPY ./ /home/app/auth-bypass-1
 
 # Switching to the new app location:
-WORKDIR /home/app/auth-bypass-simple
+WORKDIR /home/app/auth-bypass-1
 
-RUN chown -R app:app /home/app/auth-bypass-simple
+RUN chown -R app:app /home/app/auth-bypass-1
 
 # Switching to the limited user
 USER app

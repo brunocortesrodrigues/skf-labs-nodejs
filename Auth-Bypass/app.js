@@ -31,7 +31,6 @@ app.all("/login", (req, res) => {
         req.session.userId = row.UserId;
         req.session.secret = "e5ac-4ebf-03e5-9e29-a3f562e10b22";
         req.session.loggedIn = true;
-        console.log(req.session);
         db.get(api, [req.session.userId], (err, row) => {
           res.render("home.ejs", { api: row.API_key });
         });
