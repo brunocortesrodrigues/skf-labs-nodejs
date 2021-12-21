@@ -39,31 +39,24 @@
 	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
 	<br/><br/>
     	<center> 		
-			<img src="/img/logo.svg" width="60%" height="60%"/><br/>
-			<p style="color:#515594; font-size:1.0em;">
-			<a href="https://github.com/blabla1337/skf-flask" style="color:#515594; font-size:1.7em;">OWASP S.K.F.</a></p>
-			<p><a href="https://gitter.im/Security-Knowledge-Framework/Lobby" rel="nofollow">
-			<img src="/img/badge.svg" alt="Join the chat at https://gitter.im/Security-Knowledge-Framework/Lobby" data-canonical-src="/static/img/badge.svg" style="max-width:100%;">
-			</a> 			
-			</p>  	
+			<img src="/img/logo.svg" width="60%" height="60%"/> 		
+			<br/> 		
+			<p style="color:#515594; font-size:1.0em;"><a href="https://github.com/blabla1337/skf-flask" style="color:#515594; font-size:1.7em;">OWASP S.K.F.</a></p>  	 			<p><a href="https://gitter.im/Security-Knowledge-Framework/Lobby" rel="nofollow"> 				<img src="/img/badge.svg" alt="Join the chat at https://gitter.im/Security-Knowledge-Framework/Lobby" data-canonical-src="/img/badge.svg" style="max-width:100%;"></a> 			</p>  	
+			<h3>Hint <span id="hint-num">0</span>/2 (<a
+                href="#" onclick="showHint(); return false">show</a>)
+        </h3>
+
+        <div id="hints">
+                <ol>
+                        <li style="display: none" data-hidden="true"><b>1.</b>
+                                The username is: 12345
+                        <li style="display: none" data-hidden="true"><b>2.</b>
+                                Brute force with a dictionary of easy passwords.
+                </ol>
+        </div>
 		</center>
-		<br>
-		<div>
-			<h2 align="center">Hint <span id="hint-num">0</span>/2 (<button class="btn btn-primary btn-lg" type="button"
-					onclick="showHint(); return false">show</button>)
-			</h2>
-
-			<div id="hints">
-				<ol>
-					<li style="display: none" data-hidden="true"><b>1.</b>
-						Find, identify and explore every possible input field that could be object of injection.
-					<li style="display: none" data-hidden="true"><b>2.</b>
-						Try to inject and execute javascript code in the field.
-				</ol>
-			</div>
-		</div>
 	</div><!--/.sidebar-->
-
+		
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">			
 		<div class="row">
 
@@ -74,28 +67,29 @@
 				<h1 class="page-header">Live demonstration!</h1>
 			</div>
 		</div><!--/.row-->
+				
 		
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
-					<div class="panel-heading">XSS!</div>
+					<div class="panel-heading">Credentials Guessing 1</div>
 					<div class="panel-body">
 						<div class="col-md-6">
-							<form method="post" action="/home">
-								<input type="text" class="form-control" name="string" placeholder="fill me in plz" /><br />
-								<button class="btn btn-primary" type="submit">Submit Button</button>
-						</div>
+							<form method="post" action="/login" >
+							<input type="text" class="form-control" name="username" placeholder="username"/><br/>
+                			<input type="password" class="form-control" name="password" placeholder="password"/><br/>
+               			    <button class="btn btn-primary" type="submit">Submit Button</button>
+               			</div>
 						</form>
 					</div>
 				</div>
 			</div><!-- /.col-->
 		</div><!-- /.row -->
-	
 		
 	
      <center>
-        <p style="font-size:2em;"> 
-		    	<%- xss %>
+        <p style="font-size:2em;">  
+		    <!-- content -->
 		  </p>
       </center>
 
