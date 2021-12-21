@@ -57,7 +57,6 @@ app.post("/create", (req, res) => {
     .createHash("sha1")
     .update(req.body.username)
     .digest("hex");
-  console.log(hash);
   const sql = "SELECT * FROM users WHERE username = ?";
   if (username != "" && password != "") {
     db.get(sql, [username], (err, row) => {
