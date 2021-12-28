@@ -11,7 +11,6 @@ console.log(pdf_ids);
 
 const generate_pdf = (id, message) => {
   const doc = new PDFDocument();
-  const filename = `${id}.pdf`;
   doc.pipe(fs.createWriteStream(id.toString() + ".pdf"));
   doc.fontSize(25).text(message);
   doc.end();
