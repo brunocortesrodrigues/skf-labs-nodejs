@@ -2,7 +2,6 @@ const cookieSession = require("cookie-session");
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
 const cookieParser = require("cookie-parser");
-const session = require("express-session");
 const app = express();
 const cors = require("cors");
 const db = new sqlite3.Database("./Database.db3");
@@ -20,22 +19,9 @@ app.use(
   })
 );
 
-var corsOptions = {
-  origin: "*",
-  methods: ["GET"],
-  allowedHeaders: [
-    "Origin",
-    "X-Requested-With",
-    "contentType",
-    "Content-Type",
-    "Accept",
-    "Authorization",
-  ],
-  credentials: true,
-  origin: true,
-  optionsSuccessStatus: 200,
-};
-app.use(cors(corsOptions));
+app.use(cors({ origin: true, credentials: true }));
+app.options(cors({ origin: true, credentials: true }));
+
 app.get("", (req, res) => {
   res.render("index.ejs");
 });
