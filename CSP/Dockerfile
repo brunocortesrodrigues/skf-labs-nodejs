@@ -8,12 +8,12 @@ RUN apk update --no-cache && apk add nodejs nodejs-npm bash git dos2unix
 RUN addgroup -g 1000 app 
 RUN adduser -u 1000 -G app -D -h /home/app app
 
-COPY ./ /home/app/Credentials2
+COPY ./ /home/app/CSP
 
 # Switching to the new app location:
-WORKDIR /home/app/Credentials2
+WORKDIR /home/app/CSP
 
-RUN chown -R app:app /home/app/Credentials2
+RUN chown -R app:app /home/app/CSP
 
 # Switching to the limited user
 USER app
