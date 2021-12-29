@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-const { exec } = require("child_process");
 const fs = require("fs");
 
 app.use(express.static(__dirname + "/static"));
