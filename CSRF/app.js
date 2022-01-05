@@ -34,6 +34,7 @@ app.post("/login", (req, res) => {
       session.userId = row.UserId;
       session.loggedIn = true;
       db.get("SELECT * FROM preferences", (err, row) => {
+        session.color = row.Color;
         res.render("home.ejs", { color: row.Color });
       });
     } else {
@@ -49,9 +50,18 @@ app.post("/update", (req, res) => {
     const sql = "UPDATE preferences SET Color = ? WHERE UserId = ?";
     db.run(sql, [req.body.color, req.session.userId], () => {
       db.get("SELECT * FROM preferences", (err, row) => {
+        session.color = row.Color;
         res.render("home.ejs", { color: row.Color });
       });
     });
+  }
+});
+
+app.get("/update", (req, res) => {
+  if (!session.loggedIn) {
+    res.redirect("/");
+  } else {
+    res.render("home.ejs", { color: session.color });
   }
 });
 
