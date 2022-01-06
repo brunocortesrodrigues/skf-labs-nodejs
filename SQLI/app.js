@@ -14,8 +14,7 @@ app.get("", (req, res) => {
 app.get("/home/:pageId", (req, res) => {
   db.get(
     "SELECT pageId, title, content FROM pages WHERE pageId=" +
-      req.params.pageId +
-      ";",
+      req.params.pageId,
     function (err, rows) {
       if (err) {
         res.status(500).end(" " + err);
