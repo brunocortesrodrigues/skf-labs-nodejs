@@ -19,7 +19,7 @@ app.get("/newsite", (req, res) => {
   res.render("index.ejs", { content: "Welcome to the new website!" });
 });
 
-app.post("/redirect", (req, res) => {
+app.all("/redirect", (req, res) => {
   let newurl = req.query.newurl;
   if (blacklist(newurl)) {
     res.render("index.ejs", {
