@@ -35,6 +35,7 @@ app.post("/login_insecure", (req, res) => {
       session.userId = row.UserId;
       session.loggedIn = true;
       db.get("SELECT * FROM preferences", (err, row) => {
+        session.color = row.Color;
         res.render("home.ejs", { color: row.Color });
       });
     } else {
@@ -54,6 +55,7 @@ app.post("/login_strict", (req, res) => {
       session.userId = row.UserId;
       session.loggedIn = true;
       db.get("SELECT * FROM preferences", (err, row) => {
+        session.color = row.Color;
         res.render("home.ejs", { color: row.Color });
       });
     } else {
@@ -73,6 +75,7 @@ app.post("/login_lax", (req, res) => {
       session.userId = row.UserId;
       session.loggedIn = true;
       db.get("SELECT * FROM preferences", (err, row) => {
+        session.color = row.Color;
         res.render("home.ejs", { color: row.Color });
       });
     } else {
@@ -81,24 +84,35 @@ app.post("/login_lax", (req, res) => {
   });
 });
 
-app.all("/update", (req, res) => {
+app.post("/update", (req, res) => {
   const sql = "UPDATE preferences SET Color = ? WHERE UserId = ?";
   if (!session) {
     res.redirect("/");
   } else {
-    if (req.method === "POST") {
-      db.run(sql, [req.body.color, req.session.userId], (err) => {
-        db.get("SELECT * FROM preferences", (err, row) => {
-          res.render("home.ejs", { color: row.Color });
-        });
+    db.run(sql, [req.body.color, req.session.userId], (err) => {
+      db.get("SELECT * FROM preferences", (err, row) => {
+        session.color = row.Color;
+        res.render("home.ejs", { color: row.Color });
       });
-    }
-    if (req.method === "GET" && req.query.color) {
+    });
+  }
+});
+
+app.get("/update", (req, res) => {
+  console.log(req.query);
+  if (!session.loggedIn) {
+    res.redirect("/");
+  } else {
+    if (req.query.color) {
+      const sql = "UPDATE preferences SET Color = ? WHERE UserId = ?";
       db.run(sql, [req.query.color, req.session.userId], (err) => {
         db.get("SELECT * FROM preferences", (err, row) => {
+          session.color = row.Color;
           res.render("home.ejs", { color: row.Color });
         });
       });
+    } else {
+      res.render("home.ejs", { color: session.color });
     }
   }
 });
