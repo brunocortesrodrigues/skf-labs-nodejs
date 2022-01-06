@@ -14,25 +14,25 @@ app.get("", (req, res) => {
 app.get("/home/:pageId", (req, res) => {
   db.get(
     "SELECT pageId, title, content FROM pages WHERE pageId=" +
-      req.params.pageId +
-      ";",
-    (err, rows) => {
+      req.params.pageId,
+    function (err, rows) {
       if (err) {
         res.status(500).end(" " + err);
       } else if (rows == undefined) {
         res.status(404).render("404.ejs");
       } else {
-        if (req.params.pageId == 1) {
+        if (req.params.pageId == "1") {
           res.render("index.ejs", {
-            title: "The welcome page",
-            content: "Some text about the welcome page is inserted here",
+            title: rows.title,
+            content: rows.content,
           });
-        }
-        if (req.params.pageId == 2) {
+        } else if (req.params.pageId == "2") {
           res.render("index.ejs", {
-            title: "About",
-            content: "Some text about the about page!",
+            title: rows.title,
+            content: rows.content,
           });
+        } else {
+          res.render("index.ejs", { title: null, content: null });
         }
       }
     }
