@@ -41,8 +41,10 @@ app.get("/loggedin", (req, res) => {
             username: row.UserName,
           });
         } else {
-          res.render("loggedin.ejs", { msg: msg, username: row.UserName });
+          res.render("loggedin.ejs", { msg: txt, username: row.UserName });
         }
+      } else {
+        res.render("loggedin.ejs", { msg: msg, username: null });
       }
     });
   } else {
