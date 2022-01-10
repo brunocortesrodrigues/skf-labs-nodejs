@@ -36,4 +36,4 @@ PRINTSCREEN PLACEHOLDER
 
 ## Additional sources :
 
-Please refer the link below: [https://www.owasp.org/index.php/Clickjacking](https://www.owasp.org/index.php/Clickjacking)
+https://owasp.org/www-community/attacks/Clickjacking
