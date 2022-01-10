@@ -57,7 +57,6 @@ app.post("/viewer", (req, res) => {
       print_result += eval(lines_type + "_lines")(line);
     }
   }
-
   res.render("index.ejs", { mode: mode, print_result: print_result });
 });
 

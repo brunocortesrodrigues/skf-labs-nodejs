@@ -3,21 +3,22 @@ const app = express();
 const fileUpload = require("express-fileupload");
 const { exec } = require("child_process");
 const fs = require("fs");
+const path = require("path");
 
 app.use(express.static(__dirname + "/static"));
 app.use(express.urlencoded({ extended: true }));
-app.use(fileUpload());
+app.use(fileUpload({ uriDecodeFileNames: true }));
 
-const ALLOWED_EXTENSIONS = ["txt", "pdf", "png", "jpg", "jpeg", "html"];
+const ALLOWED_EXTENSIONS = ["txt", "pdf", "png", "jpg", "jpeg", "html", "ejs"];
 
 const allowed_file = (filename) => {
   const extension = filename.split(".").pop();
   return ALLOWED_EXTENSIONS.includes(extension);
 };
 
-const system_call = () => {
+const system_call = (command) => {
   return new Promise((resolve, reject) => {
-    exec(`ls -lart *`, (error, stdout) => {
+    exec(command, (error, stdout) => {
       if (error) {
         reject(error);
       }
@@ -27,16 +28,18 @@ const system_call = () => {
 };
 
 app.get("/", async (req, res) => {
-  res.render("index.ejs", { uploaded: null, system_call: await system_call() });
+  res.render("index.ejs", {
+    uploaded: null,
+    system_call: await system_call("ls -l"),
+  });
 });
 
 app.post("/", async (req, res) => {
   const file = req.files.file;
-  const path = "upload/" + file.name;
+  const filePath = "upload/" + file.name;
   if (file && allowed_file(file.name)) {
-    file.mv(path, async (err) => {
+    file.mv(filePath, async (err) => {
       if (err) return res.status(500).send(err);
-
       res.render("index.ejs", {
         uploaded: "File uploaded successfully",
         system_call: await system_call(),

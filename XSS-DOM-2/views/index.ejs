@@ -17,9 +17,9 @@
           endpoint = location.hash.slice(5);
           var script = document.createElement("script");
           if (endpoint) {
-            script.src = endpoint + "/static/js/welcome.js";
+            script.src = endpoint + "/js/welcome.js";
           } else {
-            script.src = "/static/js/welcome.js";
+            script.src = "/js/welcome.js";
           }
           document.head.appendChild(script);
         }, 2000);

@@ -7,7 +7,6 @@ app.use(express.static(__dirname + "/static"));
 app.use(express.urlencoded({ extended: true }));
 
 let pdf_ids = Array.from({ length: 60 }, () => Math.floor(Math.random() * 100));
-console.log(pdf_ids);
 
 const generate_pdf = (id, message) => {
   const doc = new PDFDocument();
