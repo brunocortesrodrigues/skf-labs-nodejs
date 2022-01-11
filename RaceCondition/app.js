@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const { exec } = require("child_process");
+const { execSync } = require("child_process");
 const fs = require("fs");
 
 app.use(express.static(__dirname + "/static"));
@@ -40,10 +41,14 @@ app.use(function (req, res) {
 const boot_validate = (person) => {
   fs.writeFileSync("hello.sh", 'echo "' + person + '" > hello.txt');
   exec("echo 'hello.sh updated -- " + Date.now() + "' > log.txt");
-  exec("bash hello.sh");
-  let valid = fs.readFileSync("hello.txt", "utf8");
   exec("echo 'hello.sh cleaned -- " + Date.now() + "' >> log.txt");
-  return valid;
+  exec("bash hello.sh");
+  const valid = () => {
+    return execSync(
+      "sed -n '/^echo \"[A-Za-z0-9 ]*\" > hello.txt$/p' hello.sh"
+    ).toString();
+  };
+  return valid();
 };
 
 const boot_clean = () => {
