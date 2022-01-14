@@ -111,4 +111,6 @@ PRINTSCREEN PLACEHOLDER
 
 ## Additional sources
 
-https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html
+https://owasp.org/www-project-top-ten/2017/A5_2017-Broken_Access_Control
+
+https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/04-Authentication_Testing/04-Testing_for_Bypassing_Authentication_Schema
