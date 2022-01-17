@@ -20,7 +20,7 @@
 var req = new XMLHttpRequest();
 req.onload = reqListener;
 var host = window.location.hostname;
-req.open('get','http://0.0.0.0:5000/confidential', true);
+req.open('get','http://localhost:5000/confidential', true);
 req.withCredentials = true;
 req.send();
 function reqListener(){
@@ -94,10 +94,6 @@ document.getElementById("cors").innerHTML= req.responseText;
 	<p id="cors"></p>
 	<script src="/js/jquery-1.11.1.min.js"></script>
 	<script src="/js/bootstrap.min.js"></script>
-	<script src="/js/chart.min.js"></script>
-	<script src="/js/chart-data.js"></script>
-	<script src="/js/easypiechart.js"></script>
-	<script src="/js/easypiechart-data.js"></script>
 	<script src="/js/bootstrap-datepicker.js"></script>
 	<script>
 		!function ($) {
