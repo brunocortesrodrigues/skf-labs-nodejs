@@ -35,15 +35,9 @@ const authenticate = (req, res) => {
       result_content = entry.object;
     });
     result.on("end", (result) => {
-      if (result_content) {
-        res.render("index", {
-          result: "You are now admin user!",
-        });
-      } else {
-        res.render("index", {
-          result: "Invalid username or password",
-        });
-      }
+      result_content
+        ? res.render("index", { result: "You are now admin user!" })
+        : res.render("index", { result: "Invalid username or password" });
     });
   });
 };
