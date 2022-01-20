@@ -19,8 +19,8 @@ app.use(
   })
 );
 
-app.use(cors({ origin: true, credentials: true }));
-app.options(cors({ origin: true, credentials: true }));
+app.use(cors({ credentials: true ,origin: "*" }));
+app.options(cors({ credentials: true , origin: "*" }));
 
 app.get("", (req, res) => {
   res.render("index.ejs");
