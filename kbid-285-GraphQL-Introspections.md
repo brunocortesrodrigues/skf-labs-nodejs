@@ -109,6 +109,8 @@ That will give us the `Users` query. Now we need to understand what are the fiel
 
 ```
 
+PRINTSCREEN PLACEHOLDER
+
 ## Solution
 
 Implement authorization on graphql endpoint. Although authenticated users could query the information, you should not map sensitive information into the type defined into the schema.
