@@ -19,8 +19,7 @@ app.use(
   })
 );
 
-app.use(cors({ credentials: true ,origin: "*" }));
-app.options(cors({ credentials: true , origin: "*" }));
+app.use(cors({ credentials: true, origin: "*" }));
 
 app.get("", (req, res) => {
   res.render("index.ejs");
@@ -40,6 +39,9 @@ app.post("/login", (req, res) => {
 });
 
 app.get("/confidential", (req, res) => {
+  /*  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Vary", "Origin");
+  res.setHeader("Access-Control-Allow-Origin", "*"); */
   if (req.session.loggedIn) {
     res.render("loggedin.ejs");
   } else {
