@@ -12,7 +12,6 @@ app.get("", (req, res) => {
 });
 
 app.get("/home/:username", (req, res) => {
-  console.log(req.params.username);
   let username = req.params.username;
   db.get(
     "SELECT UserName, email FROM users WHERE UserName LIKE '%" +
