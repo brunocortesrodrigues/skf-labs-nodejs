@@ -46,13 +46,11 @@ app.post("/create", upload.none(), (req, res) => {
   const { username, password } = req.body;
   let newUser = { username, password };
   users.push(newUser);
-  console.log(users);
   res.render("index.ejs", { msg: "User created" });
 });
 
 app.post("/message", validate(postSchema), (req, res) => {
   const obj = _.merge({}, req.body, { ipAddress: req.ip });
-  console.log(obj);
   res.redirect("/login");
 });
 
@@ -62,7 +60,6 @@ app.post("/login", upload.none(), (req, res) => {
   if (user && user.password === password) {
     session.username = user.username;
     session.isLoggedIn = true;
-    console.log(session);
     res.render("loggedin.ejs", {
       username: user.username,
       admin: user.admin,
