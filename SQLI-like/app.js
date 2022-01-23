@@ -12,6 +12,7 @@ app.get("", (req, res) => {
 });
 
 app.get("/home/:username", (req, res) => {
+  console.log(req.params.username);
   let username = req.params.username;
   db.get(
     "SELECT UserName, email FROM users WHERE UserName LIKE '%" +
@@ -30,6 +31,11 @@ app.get("/home/:username", (req, res) => {
       }
     }
   );
+});
+
+app.use((err, req, res, next) => {
+  if (!err) return next();
+  return res.redirect("/");
 });
 
 app.use(function (req, res) {
