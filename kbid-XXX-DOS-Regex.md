@@ -59,7 +59,7 @@ PRINTSCREEN PLACEHOLDER
 Something is happening !!!
 ```
 
-Let's increase the lenght of the payload even more. From 19 characters, we send 25. The response arrives in 1420ms. As we can see the TTR (Time To Respond) is increases exponentially.
+Let's increase the lenght of the payload even more. From 28 characters, we send 35. The response arrives in 3291ms. As we can see the TTR (Time To Respond) is increases exponentially.
 
 PRINTSCREEN PLACEHOLDER
 
