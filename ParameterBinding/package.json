@@ -1,5 +1,5 @@
 {
-  "name": "mass-assignment",
+  "name": "parameter-binding",
   "version": "0.0.1",
   "main": "app.js",
   "scripts": {

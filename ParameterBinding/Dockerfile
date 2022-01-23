@@ -8,12 +8,12 @@ RUN apk update --no-cache && apk add nodejs nodejs-npm bash git dos2unix imagema
 RUN addgroup -g 1000 app 
 RUN adduser -u 1000 -G app -D -h /home/app app
 
-COPY ./ /home/app/Mass-Assignment
+COPY ./ /home/app/ParameterBinding
 
 # Switching to the new app location:
-WORKDIR /home/app/Mass-Assignment
+WORKDIR /home/app/ParameterBinding
 
-RUN chown -R app:app /home/app/Mass-Assignment
+RUN chown -R app:app /home/app/ParameterBinding
 
 # Switching to the limited user
 USER app
