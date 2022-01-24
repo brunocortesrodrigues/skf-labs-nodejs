@@ -38,14 +38,12 @@ app.post("/login", (req, res) => {
       session.loggedIn = true;
       session.csrf_token = Buffer.from(csrf_token).toString("base64");
       db.get("SELECT * FROM preferences", (err, row) => {
-        if (row) {
-          res.render("home.ejs", {
-            color: row.Color,
-            csrf_token: session.csrf_token,
-          });
-        } else {
-          res.render("home.ejs", { color: null, csrf_token: null });
-        }
+        row
+          ? res.render("home.ejs", {
+              color: row.Color,
+              csrf_token: session.csrf_token,
+            })
+          : res.render("home.ejs", { color: null, csrf_token: null });
       });
     } else {
       res.render("");

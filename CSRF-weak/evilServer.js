@@ -8,7 +8,8 @@ app.get("", (req, res) => {
   const date = new Date();
   const time = date.getHours() + ":" + date.getMinutes();
   const csrf_token = "admin" + time;
-  res.render("evil.ejs", { csrf_token: csrf_token });
+  const encoded_csrf_token = Buffer.from(csrf_token).toString("base64");
+  res.render("evil.ejs", { csrf_token: encoded_csrf_token });
 });
 
 app.use(function (req, res) {
