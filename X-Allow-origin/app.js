@@ -11,15 +11,15 @@ app.use((req, res, next) => {
 });
 
 app.get("", (req, res) => {
-  res.render("index.ejs");
+  res.render("index.ejs", { output: null });
 });
 
 app.get("/allowed", cors(), (req, res) => {
-  res.render("index.ejs");
+  res.render("index.ejs", { output: "allowed" });
 });
 
 app.get("/protected", (req, res) => {
-  res.render("index.ejs");
+  res.render("index.ejs", { output: "protected" });
 });
 
 app.use(function (req, res) {
