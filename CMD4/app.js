@@ -15,8 +15,6 @@ app.post("/", (req, res) => {
   ip = ip.replace("`", "");
   ip = ip.replace(";", "");
   ip = ip.replace("&", "");
-  console.log(`### ${ip}`);
-
   exec(`ping -c1 ${ip} > ./ping_output`);
 
   setTimeout(() => {
@@ -24,7 +22,7 @@ app.post("/", (req, res) => {
       console.log(data);
       res.render("index.ejs", { read: data });
     });
-  }, 10000);
+  }, 9000);
 });
 
 app.use(function (req, res) {
