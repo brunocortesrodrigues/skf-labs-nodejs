@@ -10,7 +10,6 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", async (req, res) => {
   const sql = "SELECT * FROM pages";
   db.all(sql, (err, rows) => {
-    console.log(rows);
     res.render("index.ejs", {
       menu: rows,
     });
@@ -23,8 +22,6 @@ app.get("/home/:pageId", async (req, res) => {
   console.log("XXXX : " + pageId);
   const sql = "SELECT * FROM pages WHERE pageId = ?";
   db.all("SELECT * FROM pages", (err, rows) => {
-    console.log(rows);
-    console.log(rows[pageId]);
     let page = rows[pageId];
     res.render("index.ejs", {
       menu: rows,
@@ -50,8 +47,6 @@ app.post("/pages/add", (req, res) => {
     });
   });
 });
-
-// need to check if this works
 
 app.get("/pages/export", (req, res) => {
   const sql = "SELECT * FROM pages";
