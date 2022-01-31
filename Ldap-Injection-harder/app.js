@@ -27,19 +27,23 @@ const authenticate = (req, res) => {
     filter: "(&(cn=" + username + ")(sn=" + password + "))",
   };
   let result_content = null;
-  client.search("ou=accounts,dc=com", options, (err, result) => {
-    if (err) {
-      res.render("index", { result: "Invalid username or password" });
-    }
-    result.on("searchEntry", (entry) => {
-      result_content = entry.object;
+  try {
+    client.search("ou=accounts,dc=com", options, (err, result) => {
+      if (err) {
+        res.render("index", { result: "Invalid username or password" });
+      }
+      result.on("searchEntry", (entry) => {
+        result_content = entry.object;
+      });
+      result.on("end", (result) => {
+        result_content
+          ? res.render("index", { result: "You are now admin user!" })
+          : res.render("index", { result: "Invalid username or password" });
+      });
     });
-    result.on("end", (result) => {
-      result_content
-        ? res.render("index", { result: "You are now admin user!" })
-        : res.render("index", { result: "Invalid username or password" });
-    });
-  });
+  } catch (error) {
+    res.render("index", { result: "Invalid username or password" });
+  }
 };
 
 app.get("", (req, res) => {

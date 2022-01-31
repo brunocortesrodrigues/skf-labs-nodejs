@@ -1,4 +1,4 @@
-# KBID xxx - LFI-2
+# KBID xxx - Ldap Injection - harder
 
 ## Running the app nodeJs
 
