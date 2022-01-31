@@ -22,7 +22,6 @@ client.bind("cn=ldapadmin,ou=accounts,dc=com", "mysecret", (err) => {});
 const authenticate = (req, res) => {
   const username = req.body.username;
   const password = req.body.secret_answer;
-  console.log(password);
   const options = {
     scope: "sub",
     filter: "(&(cn=" + username + ")(sn=" + password + "))",
